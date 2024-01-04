@@ -13,16 +13,29 @@
 # db=SQLAlchemy(app)
 # from application import routes
 
-
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
-load_dotenv()
-app = Flask(__name__)
-app.json_provider_class.sort_keys = False
-CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["SQLALCHEMY_DATABASE_URI"]
-db = SQLAlchemy(app)
-# from application import routes
+
+db = SQLAlchemy()
+
+def create_app(env=None):
+    load_dotenv()
+    app = Flask(__name__)
+    app.json_provider_class.sort_keys = False
+    CORS(app)
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["SQLALCHEMY_DATABASE_URI"]
+    
+    db.init_app(app)
+    app.app_context().push()
+
+    from application.routes import books
+    app.register_blueprint(books)
+
+    from application.books.routes import books2
+    app.register_blueprint(books2)
+
+    return app
+    # from application import routes
