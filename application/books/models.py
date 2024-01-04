@@ -1,5 +1,4 @@
-from application import db, app
-app.app_context().push()
+from application import db
 
 class Book(db.Model):
     __tablename__='books'

@@ -1,7 +1,8 @@
-from application import app
-from flask import jsonify
+from flask import jsonify, Blueprint
 
-@app.route('/')
+books = Blueprint("books", __name__)
+
+@books.route('/')
 def hello():
     return jsonify({
         "message": "Welcome to the book application",
